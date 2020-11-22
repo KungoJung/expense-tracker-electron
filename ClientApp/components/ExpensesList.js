@@ -2,7 +2,7 @@ import React from 'react';
 import Table from "react-bootstrap/Table"
 import Button from "react-bootstrap/Button";
 
-const ExpensesList = ({expenses}) => {
+const ExpensesList = ({expenses, removeExpense, editExpense}) => {
   return (
     <Table striped bordered hover>
       <thead>
@@ -18,8 +18,8 @@ const ExpensesList = ({expenses}) => {
               <td>{i+1}</td>
               <td>{item}</td>
               <td>
-                <Button variant="outline-warning">Edit</Button>{' '}
-                <Button variant="outline-danger">Remove</Button>
+                <Button variant="outline-warning" onClick={() => editExpense(item)}>Edit</Button>{' '}
+                <Button variant="outline-danger" onClick={() => removeExpense(item)}>Remove</Button>
               </td>
             </tr>
           )

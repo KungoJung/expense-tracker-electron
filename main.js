@@ -4,8 +4,10 @@
 const { app, Menu, ipcMain, BrowserWindow } = require('electron');
 const path = require('path')
 const url = require('url')
-const {HANDLE_FETCH_DATA, FETCH_DATA_FROM_STORAGE, HANDLE_SAVE_DATA, SAVE_DATA_IN_STORAGE} = require("./utils/constants")
 const storage = require("electron-json-storage")
+
+// Import all app constants
+const { HANDLE_FETCH_DATA, FETCH_DATA_FROM_STORAGE, HANDLE_SAVE_DATA, SAVE_DATA_IN_STORAGE, REMOVE_DATAPOINT_FROM_STORAGE,  EDIT_DATAPOINT_IN_STORAGE } = require("./utils/constants")
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -144,7 +146,7 @@ ipcMain.on(FETCH_DATA_FROM_STORAGE, (event, message) => {
     if (error) {
       mainWindow.send(HANDLE_FETCH_DATA, {
         success: false,
-        message: "expenses not returned",
+        error: "expenses not returned",
       })
     } else {
       // Send message back to window
@@ -164,13 +166,13 @@ ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
   // update the expenses array.
   expenses.push(message)
 
-  // Save expenses to storage
+  // Save expenses to storage and send msg to the window
   storage.set("expenses", expenses, (error) => {
     if (error) {
       console.log("We errored! What was data?")
       mainWindow.send(HANDLE_SAVE_DATA, {
         success: false,
-        message: "expenses not saved",
+        error: "expenses not saved",
       })
     } else {
       // Send message back to window as 2nd arg "data"
@@ -181,4 +183,64 @@ ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
     }
   })
 });
+
+ipcMain.on(REMOVE_DATAPOINT_FROM_STORAGE, (event, message) => {
+  console.log("main received", REMOVE_DATAPOINT_FROM_STORAGE, "message:", message)
+
+  // Basic temporary filterer
+  expenses = expenses.filter(expense => expense !== message)
+
+  // Save expenses to storage and send msg to the window
+  storage.set("expenses", expenses, (error) => {
+    if (error) {
+      mainWindow.send(HANDLE_FETCH_DATA, {
+        success: false,
+        error: "error removing an expense from storage",
+      })
+    } else {
+      // Send message back to window
+      mainWindow.send(HANDLE_FETCH_DATA, {
+        success: true,
+        message: expenses,
+      })
+    }
+  })
+})
+
+// Update a datapoint -- message will be the updated
+ipcMain.on(EDIT_DATAPOINT_IN_STORAGE, (event, message) => {
+  console.log("main received", EDIT_DATAPOINT_IN_STORAGE, "message:", message)
+
+  let datapointToEdit = expenses.find(expense => {
+    // The message should have an identifying key
+    expense.id === message.id
+  })
+
+  if (datapointToEdit) {
+    datapointToEdit = message;
+    console.log("does this properly update the expenses array?", expenses)
+
+    // Set expenses in storage
+    storage.set("expenses", expenses, (error) => {
+      if (error) {
+        mainWindow.send(HANDLE_FETCH_DATA, {
+          success: false,
+          error: "error editing an expense in storage",
+        })
+      } else {
+        // Send message back to window
+        mainWindow.send(HANDLE_FETCH_DATA, {
+          success: true,
+          message: expenses,
+        })
+      }
+    })
+  } else {
+    // The datapoint was not found
+    mainWindow.send(HANDLE_FETCH_DATA, {
+      success: false,
+      error: "main: did not find the corresponding expense",
+    })
+  }
+})
 
