@@ -87,7 +87,7 @@ const Home = () => {
         <BudgetProgress />
         {/* {if in pie chart mode, show the following two:} */}
         {pieView ? (
-          <PieChartContainer expenses={expenses} />
+          <PieChartContainer expenses={expenses} setCategoryFilter={setCategoryFilter} changeView={changeView} />
         ) :
           expenses.length ? (
             <ExpensesList expenses={categoryFilter === "All" ? expenses : filteredExpenses}/>

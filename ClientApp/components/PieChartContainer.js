@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { VictoryPie, VictoryTooltip, VictoryLegend } from "victory";
 import accounting from "accounting";
 
-const PieChartContainer = ({ expenses }) => {
+const PieChartContainer = ({ expenses, setCategoryFilter, changeView }) => {
   const [categoryTotals, setCategoryTotals] = useState({});
 
 
@@ -11,8 +11,8 @@ const PieChartContainer = ({ expenses }) => {
     setCategoryTotals(totals)
   }, [expenses])
 
-  const data = Object.keys(categoryTotals).map(cat => {
-    return {y: categoryTotals[cat], label: `${cat}: ${accounting.formatMoney(categoryTotals[cat])}`}
+  const data = Object.keys(categoryTotals).map((cat, i) => {
+    return {y: categoryTotals[cat], label: `${cat}: ${accounting.formatMoney(categoryTotals[cat])}`, specialIdx: i, type: cat}
   })
 
   const totalSpent = Object.values(categoryTotals).reduce((acc, amt) => {
@@ -51,6 +51,11 @@ const PieChartContainer = ({ expenses }) => {
                   mutation: () => ({ active: false })
                 }
               ];
+            },
+            onClick: (e, clickedProps) => {
+              const match = clickedProps.data.find(catObj => catObj.specialIdx === clickedProps.index)
+              setCategoryFilter(match.type)
+              changeView(false)
             }
           }
         }]}
