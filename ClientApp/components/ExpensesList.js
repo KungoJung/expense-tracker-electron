@@ -2,7 +2,10 @@ import React from 'react';
 import Table from "react-bootstrap/Table"
 import Button from "react-bootstrap/Button";
 import accounting from "accounting";
+import getMonth from 'date-fns/getMonth';
+import getDate from 'date-fns/getDate';
 import {removeDatapointFromStorage, editDatapointInStorage} from "../renderer.js";
+const { months } = require("../../utils/constants");
 
 const ExpensesList = ({expenses}) => {
 
@@ -14,21 +17,18 @@ const ExpensesList = ({expenses}) => {
     editDatapointInStorage(expense)
   }
 
+  // Sort expenses by most recent
+  const orderedExpenses = expenses.slice().sort((a,b) => {
+    return new Date(b.date) - new Date(a.date)
+  })
+
   return (
     <Table striped bordered hover>
-      {/* <thead>
-        <tr>
-          <th>Date</th>
-          <th>Amt</th>
-          <th>Description</th>
-          <th>Category</th>
-        </tr>
-      </thead> */}
       <tbody>
-        {expenses.map((item) => {
+        {orderedExpenses.map((item) => {
           return (
             <tr key={item.id}>
-              <td>{item.date}</td>
+              <td>{months[getMonth(new Date(item.date))].slice(0, 3)} {getDate(new Date(item.date))}</td>
               <td>{accounting.formatMoney(item.amount)}</td>
               <td>{item.description}</td>
               <td>{item.category}</td>

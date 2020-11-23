@@ -1,15 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 import {loadSavedData} from "../renderer.js";
 import ExpensesList from "./ExpensesList";
 import NewExpense from "./NewExpense";
+import getMonth from 'date-fns/getMonth';
+import getYear from 'date-fns/getYear';
 const { ipcRenderer } = require("electron");
-const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA } = require("../../utils/constants")
+const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA, months } = require("../../utils/constants")
 
 const Home = () => {
 
   const [pieView, changeView] = useState(true)
   const [expenses, setExpenses] = useState([]);
+
+  // Incorporate this later for filtering for each month -- months are index 0:
+  const [calMonth, changeCalMonth] = useState(getMonth(new Date()));
+  const [calYear, changeCalYear] = useState(getYear(new Date()));
 
   // Grab the user's saved expenses after the app loads
   useEffect(() => {
@@ -58,7 +65,9 @@ const Home = () => {
   return (
     <div style={{"display": "flex", "flexDirection": "row", "margin": "5%"}}>
       <div style={{"display": "flex", "flexDirection": "column", "width": '70%', "marginRight": "5%"}}>
-        <p>Placeholder for budget tracker</p>
+        <h4>{"⬅   "}{months[calMonth]} {calYear}{"   ➡"}</h4>
+        <p>Placeholder for budget tracker. Sample progress:</p>
+        <ProgressBar now={60} style={{marginBottom: "30px"}}/>
         {/* {if in pie chart mode, show the following two:} */}
         {pieView ? (
           <p>Placeholder for pie chart and total spent this month</p>
@@ -69,7 +78,7 @@ const Home = () => {
         }
       </div>
       <div style={{"display": "flex", "flexDirection": "column", "width": '30%'}}>
-        <Button onClick={handleChangeView}>{pieView ? "View Expenses" : "Home"}</Button>
+        <Button onClick={handleChangeView} style={{marginBottom: "15px"}}>{pieView ? "View Expenses" : "Home"}</Button>
         <NewExpense />
         {!pieView && <p>Placeholder for Category filter</p>}
       </div>
