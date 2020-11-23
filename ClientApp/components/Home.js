@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
-import {loadSavedData, saveDataInStorage, removeDatapointFromStorage, editDatapointInStorage} from "../renderer.js";
+import {loadSavedData} from "../renderer.js";
 import ExpensesList from "./ExpensesList";
 import NewExpense from "./NewExpense";
 const { ipcRenderer } = require("electron");
 const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA } = require("../../utils/constants")
 
 const Home = () => {
-  const [val, setVal] = useState("");
+
   const [pieView, changeView] = useState(true)
   const [expenses, setExpenses] = useState([]);
 
@@ -51,29 +51,8 @@ const Home = () => {
     }
   }
 
-  const handleChangeView = (event) => {
+  const handleChangeView = () => {
     changeView(!pieView)
-  }
-
-  // Manage state and input field
-  const handleChange = (e) => {
-    setVal(e.target.value)
-  }
-
-  // Send the input to main
-  const addExpense = (e, input) => {
-    e.preventDefault()
-    saveDataInStorage(input)
-    setVal("")
-  }
-
-  // Remove an expense
-  const removeExpense = (expense) => {
-    removeDatapointFromStorage(expense)
-  }
-
-  const editExpense = (expense) => {
-    editDatapointInStorage(expense)
   }
 
   return (
@@ -85,13 +64,13 @@ const Home = () => {
           <p>Placeholder for pie chart and total spent this month</p>
         ) :
           expenses.length ? (
-            <ExpensesList expenses={expenses} removeExpense={removeExpense} editExpense={editExpense}/>
+            <ExpensesList expenses={expenses} />
           ) : (<p>Add an expense to get started</p>)
         }
       </div>
       <div style={{"display": "flex", "flexDirection": "column", "width": '30%'}}>
         <Button onClick={handleChangeView}>{pieView ? "View Expenses" : "Home"}</Button>
-        <NewExpense handleChange={handleChange} addExpense={addExpense} val={val}/>
+        <NewExpense />
         {!pieView && <p>Placeholder for Category filter</p>}
       </div>
     </div>

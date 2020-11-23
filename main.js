@@ -159,12 +159,27 @@ ipcMain.on(FETCH_DATA_FROM_STORAGE, (event, message) => {
 
 })
 
+// Helper function for giving each expense a unique ID
+function createUniqueId(expenses) {
+  if (expenses.length) {
+    const lastId = expenses[expenses.length-1].id
+    return lastId+1
+  } else {
+    return 1
+  }
+}
+
 // Receive a SAVE_DATA_IN_STORAGE call from renderer
 ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
   console.log("main received", SAVE_DATA_IN_STORAGE + ": message:", message)
 
+  // attach a unique Id
+  message.id = createUniqueId(expenses)
+  console.log("message after id was added:", message)
+
   // update the expenses array.
   expenses.push(message)
+  console.log("expenses array:", expenses)
 
   // Save expenses to storage and send msg to the window
   storage.set("expenses", expenses, (error) => {
@@ -184,11 +199,11 @@ ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
   })
 });
 
-ipcMain.on(REMOVE_DATAPOINT_FROM_STORAGE, (event, message) => {
-  console.log("main received", REMOVE_DATAPOINT_FROM_STORAGE, "message:", message)
+ipcMain.on(REMOVE_DATAPOINT_FROM_STORAGE, (event, id) => {
+  console.log("main received", REMOVE_DATAPOINT_FROM_STORAGE, "message:", id)
 
   // Basic temporary filterer
-  expenses = expenses.filter(expense => expense !== message)
+  expenses = expenses.filter(expense => expense.id != id)
 
   // Save expenses to storage and send msg to the window
   storage.set("expenses", expenses, (error) => {

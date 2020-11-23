@@ -21,8 +21,8 @@ function saveDataInStorage(expense) {
 }
 
 // Send remove datapoint message to main
-function removeDatapointFromStorage(message) {
-  ipcRenderer.send(REMOVE_DATAPOINT_FROM_STORAGE, message)
+function removeDatapointFromStorage(id) {
+  ipcRenderer.send(REMOVE_DATAPOINT_FROM_STORAGE, id)
 }
 
 // Send edit datapoint message to main

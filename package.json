@@ -20,6 +20,7 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-react": "^6.24.1",
     "babili-webpack-plugin": "^0.1.2",
     "css-loader": "^0.28.1",
@@ -35,7 +36,9 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "accounting": "^0.4.1",
     "bootstrap": "^4.3.1",
+    "currency": "^4.1.0",
     "electron-json-storage": "^4.3.0",
     "react-bootstrap": "^1.0.0-beta.9"
   }

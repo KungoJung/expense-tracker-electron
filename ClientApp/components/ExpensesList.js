@@ -1,25 +1,41 @@
 import React from 'react';
 import Table from "react-bootstrap/Table"
 import Button from "react-bootstrap/Button";
+import accounting from "accounting";
+import {removeDatapointFromStorage, editDatapointInStorage} from "../renderer.js";
 
-const ExpensesList = ({expenses, removeExpense, editExpense}) => {
+const ExpensesList = ({expenses}) => {
+
+  const removeExpense = (expense) => {
+    removeDatapointFromStorage(expense)
+  }
+
+  const editExpense = (expense) => {
+    editDatapointInStorage(expense)
+  }
+
   return (
     <Table striped bordered hover>
-      <thead>
+      {/* <thead>
         <tr>
-          <th>#</th>
-          <th>Expense</th>
+          <th>Date</th>
+          <th>Amt</th>
+          <th>Description</th>
+          <th>Category</th>
         </tr>
-      </thead>
+      </thead> */}
       <tbody>
-        {expenses.map((item, i) => {
+        {expenses.map((item) => {
           return (
-            <tr key={i+1}>
-              <td>{i+1}</td>
-              <td>{item}</td>
+            <tr key={item.id}>
+              <td>{item.date}</td>
+              <td>{accounting.formatMoney(item.amount)}</td>
+              <td>{item.description}</td>
+              <td>{item.category}</td>
               <td>
-                <Button variant="outline-warning" onClick={() => editExpense(item)}>Edit</Button>{' '}
-                <Button variant="outline-danger" onClick={() => removeExpense(item)}>Remove</Button>
+                {/* future edit function */}
+                {/* <Button variant="outline-warning" onClick={() => editExpense(item)}>Edit</Button>{' '} */}
+                <Button variant="outline-danger" onClick={() => removeExpense(item.id)}>Remove</Button>
               </td>
             </tr>
           )
