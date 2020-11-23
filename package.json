@@ -36,10 +36,14 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@bit/team-material.iclinic-material.date-picker": "^1.0.0",
     "accounting": "^0.4.1",
     "bootstrap": "^4.3.1",
-    "currency": "^4.1.0",
+    "date-fns": "^2.16.1",
     "electron-json-storage": "^4.3.0",
-    "react-bootstrap": "^1.0.0-beta.9"
+    "material-ui": "^0.20.2",
+    "proptypes": "^1.1.0",
+    "react-bootstrap": "^1.0.0-beta.9",
+    "react-calendar": "^3.2.1"
   }
 }
