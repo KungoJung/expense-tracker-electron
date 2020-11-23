@@ -13,6 +13,7 @@ const ExpensesList = ({expenses}) => {
     removeDatapointFromStorage(expense)
   }
 
+  // Not sure how to handle this on UI, doesn't work yet
   const editExpense = (expense) => {
     editDatapointInStorage(expense)
   }

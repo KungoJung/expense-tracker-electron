@@ -5,15 +5,22 @@ import BudgetProgress from "./BudgetProgress"
 import ExpensesList from "./ExpensesList";
 import NewExpense from "./NewExpense";
 import PieChartContainer from "./PieChartContainer";
+import Form from 'react-bootstrap/Form';
 import getMonth from 'date-fns/getMonth';
 import getYear from 'date-fns/getYear';
 const { ipcRenderer } = require("electron");
 const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA, months } = require("../../utils/constants")
+const { categories } = require("../../utils/constants")
 
 const Home = () => {
-
   const [pieView, changeView] = useState(true)
   const [expenses, setExpenses] = useState([]);
+
+  // Keep a separate reference to all the expenses that match the current filter
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
+
+  // Keep track of filters / single category here -- it will be used by both ExpensesList and BudgetProgress comps
+  const [categoryFilter, setCategoryFilter] = useState('All')
 
   // Incorporate budget later:
   const [budget, setBudget] = useState(0)
@@ -26,6 +33,13 @@ const Home = () => {
   useEffect(() => {
     loadSavedData();
   }, []);
+
+  useEffect(() => {
+    const filtered = expenses.filter(exp => {
+      return categoryFilter === exp.category
+    })
+    setFilteredExpenses(filtered)
+  }, [categoryFilter]);
 
   // Listener functions that receive messages from main
   useEffect(() => {
@@ -76,14 +90,24 @@ const Home = () => {
           <PieChartContainer expenses={expenses} />
         ) :
           expenses.length ? (
-            <ExpensesList expenses={expenses} />
+            <ExpensesList expenses={categoryFilter === "All" ? expenses : filteredExpenses}/>
           ) : (<p>Add an expense to get started</p>)
         }
       </div>
       <div style={{"display": "flex", "flexDirection": "column", "width": '30%'}}>
         <Button onClick={handleChangeView} style={{marginBottom: "15px"}}>{pieView ? "View Expenses" : "Home"}</Button>
         <NewExpense />
-        {!pieView && <p>Placeholder for Category filter</p>}
+        {!pieView && (
+          <Form.Group controlId="formCategory" style={{marginTop: "20px"}}>
+            <Form.Label >Filter By Category</Form.Label>
+            <Form.Control as="select" name="category" onChange={(e) => setCategoryFilter(e.target.value)} value={categoryFilter} placeholder="Category">
+                <option key={"a"}>All</option>
+              {categories.map((c, i) => (
+                <option key={i}>{c}</option>
+                ))}
+            </Form.Control>
+          </Form.Group>
+        )}
       </div>
     </div>
   )
