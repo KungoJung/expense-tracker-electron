@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import Button from 'react-bootstrap/Button';
-import ProgressBar from 'react-bootstrap/ProgressBar';
 import {loadSavedData} from "../renderer.js";
+import BudgetProgress from "./BudgetProgress"
 import ExpensesList from "./ExpensesList";
 import NewExpense from "./NewExpense";
+import PieChartContainer from "./PieChartContainer";
 import getMonth from 'date-fns/getMonth';
 import getYear from 'date-fns/getYear';
 const { ipcRenderer } = require("electron");
@@ -13,6 +14,9 @@ const Home = () => {
 
   const [pieView, changeView] = useState(true)
   const [expenses, setExpenses] = useState([]);
+
+  // Incorporate budget later:
+  const [budget, setBudget] = useState(0)
 
   // Incorporate this later for filtering for each month -- months are index 0:
   const [calMonth, changeCalMonth] = useState(getMonth(new Date()));
@@ -65,12 +69,11 @@ const Home = () => {
   return (
     <div style={{"display": "flex", "flexDirection": "row", "margin": "5%"}}>
       <div style={{"display": "flex", "flexDirection": "column", "width": '70%', "marginRight": "5%"}}>
-        <h4>{"⬅   "}{months[calMonth]} {calYear}{"   ➡"}</h4>
-        <p>Placeholder for budget tracker. Sample progress:</p>
-        <ProgressBar now={60} style={{marginBottom: "30px"}}/>
+        <h4>{"⬅"} {months[calMonth]} {calYear} {"➡"}</h4>
+        <BudgetProgress />
         {/* {if in pie chart mode, show the following two:} */}
         {pieView ? (
-          <p>Placeholder for pie chart and total spent this month</p>
+          <PieChartContainer expenses={expenses} />
         ) :
           expenses.length ? (
             <ExpensesList expenses={expenses} />

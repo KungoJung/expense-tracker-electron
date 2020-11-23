@@ -19,16 +19,17 @@ const NewExpense = () => {
 
   // Manage state and input field
   const handleChange = (e) => {
-    setFormValue({
-      ...formValues,
-      [e.target.name]: e.target.value
-    })
+    if (e.target.validity.valid) {
+      setFormValue({
+        ...formValues,
+        [e.target.name]: e.target.value
+      })
+    }
   }
 
   // Send the input to main
   const addExpense = (e, expenseToAdd) => {
     e.preventDefault()
-    console.log(expenseToAdd)
     saveDataInStorage(expenseToAdd)
     setFormValue(defaultFormValue)
     toggleShow()
@@ -43,7 +44,7 @@ const NewExpense = () => {
             <InputGroup.Prepend>
               <InputGroup.Text>$</InputGroup.Text>
             </InputGroup.Prepend>
-            <Form.Control type="text" name="amount" onChange={handleChange} value={formValues.amount} placeholder="Enter Amount" />
+            <Form.Control pattern="[0-9, '.']*" type="text" name="amount" onChange={handleChange} value={formValues.amount} placeholder="Enter Amount" />
           </InputGroup>
           <Form.Group controlId="formDescription">
             <Form.Label>Description</Form.Label>

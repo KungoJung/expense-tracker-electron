@@ -1,7 +1,7 @@
 'use strict';
 
 // Import parts of electron to use
-const { app, Menu, ipcMain, BrowserWindow } = require('electron');
+const { app, ipcMain, BrowserWindow } = require('electron');
 const path = require('path')
 const url = require('url')
 const storage = require("electron-json-storage")
@@ -29,7 +29,7 @@ const defaultDataPath = storage.getDefaultDataPath();
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1024, height: 768, show: false, icon: __dirname + "/public/Lobster.icns"
+    width: 1200, height: 800, show: false, icon: __dirname + "/public/Lobster.icns"
   });
 
   // and load the index.html of the app.
@@ -68,43 +68,8 @@ function createWindow() {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
-
-  // Creates a Menu instance (optional)
-  // const menu = Menu.buildFromTemplate([
-  //   {
-  //     label: 'Track',
-  //     submenu: [
-  //       {label: "Current Month"},
-  //       {label: "Past 6 Months"},
-  //       {label: "Past Year"},
-  //       {type: "separator"},
-  //       {
-  //         label: "Link: Monefy",
-  //         click() {
-  //           shell.openExternal('https://monefy.me/')
-  //         }
-  //       },
-  //       {type: "separator"},
-  //       {
-  //         label: "Exit",
-  //         click() {
-  //           app.quit()
-  //         }
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     label: "Info",
-  //     submenu: [
-  //       {label: "this"},
-  //       {label: "that"},
-  //     ]
-  //   }
-  // ])
-//
-  // Appends the menu to the application
-//   Menu.setApplicationMenu(menu)
 }
+
 // End createWindow() ---------------------------------------------------
 
 // Application boot up and boot down
