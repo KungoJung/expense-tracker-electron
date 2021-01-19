@@ -1,20 +1,22 @@
-# Electron Expense Tracker
+# These Expenses - 
 
-### Stackathon Project exploring Electron, Bootstrap, and D3
+### Electron Expense Tracker for Fullstack Academy Hackathon Project
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
-From the Boilerplate Repo (Electron-React App)
+Expense tracker built for an offline desktop user. In the first four-day sprint of this project, I tried to incorporate an all new technology stack (except for React) that I had not used before. So, I built an expense tracker modeled after an app I use, Monefy. The big takeaways: 
 
-_Electron, React, Webpack -- Modern and up-to-date, with a handful of quality of life features included_
+* Desktop App powered by Electron JS - interprocess communication between main program and renderer (window)
+* All functional components and managed state using React Hooks
+* Views: itemized list (React-Bootstrap) or pie chart (Victory JS)
+* Date Selection (Material-UI Calendar Component)
+* Local Database provided by Electron-JSON-Storage library
 
-I made this starter kit as most boilerplates were either out-of-date, heavy handed, or enforced a structure on me that I just didnt like.
-With a very select assortment of modules, this starter kit is designed to get you up and running very quickly, and to let you easily drop in your own structure and tools on top of it.
-The basic structure of `src/` is intentionally minimal to make it easier to allow you to put your own twist on how you like things laid out.
+I used all of these technologies or methods for the first time in this project, and was able to successfully implement them in the first four day sprint. For those curious about building a similar project, I created this [video tutorial](https://www.youtube.com/watch?v=b4Hgu1_0bOk&t=258s) and this [boilerplate repo](https://github.com/KungoJung/Boilerplate-Electron-React-JSONStorage) for a React Electron project with a basic, local JSON database. 
 
-Production builds babel-minify is used, and ES2015/ES6 transpilation is provided -- As modern node and chromium versions support 99%+ of the ES6 feature set, I feel those steps are unnecessary.
+<img src="public/Expenses_SS2.png" width=600>
 
-If you like this project, check out [enhanced-electron-react-boilerplate](https://github.com/pbarbiero/enhanced-electron-react-boilerplate) which is this project with my take on additional modules (photon, redux, less, css modules etc) and my personal project structure (based on the redux ducks proposal) I suggest you give it a look if you want less of a minimalistic take on my starter kit.
+<img src="public/Expenses_SS1.png" width=600>
 
 ### To get started:
 * Run `npm install`
