@@ -5,11 +5,12 @@ import BudgetProgress from "./BudgetProgress"
 import ExpensesList from "./ExpensesList";
 import NewExpense from "./NewExpense";
 import PieChartContainer from "./PieChartContainer";
+import CalendarDisplay from "./CalendarDisplay"
 import Form from 'react-bootstrap/Form';
 import getMonth from 'date-fns/getMonth';
 import getYear from 'date-fns/getYear';
 const { ipcRenderer } = require("electron");
-const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA, months } = require("../../utils/constants")
+const { HANDLE_FETCH_DATA, HANDLE_SAVE_DATA } = require("../../utils/constants")
 const { categories } = require("../../utils/constants")
 
 const Home = () => {
@@ -36,10 +37,17 @@ const Home = () => {
 
   useEffect(() => {
     const filtered = expenses.filter(exp => {
-      return categoryFilter === exp.category
+      const expDate = new Date(exp.date)
+      // const year = getYear(expDate);
+      // const month = getMonth(expDate);
+      return (categoryFilter === "All" || categoryFilter === exp.category)
+        && getYear(expDate) === calYear
+        && getMonth(expDate) === calMonth
     })
+    console.log("NEW FILTERED EXPENSES:", filtered)
     setFilteredExpenses(filtered)
-  }, [categoryFilter]);
+    // Listen for new Expenses, change in month or filter
+  }, [categoryFilter, calMonth, expenses]);
 
   // Listener functions that receive messages from main
   useEffect(() => {
@@ -76,21 +84,27 @@ const Home = () => {
     }
   }
 
+  // Toggle between Pie and List views
   const handleChangeView = () => {
+    if (!pieView) {
+      // Going into Pie View we want to view all Categories
+      setCategoryFilter("All")
+    }
     changeView(!pieView)
   }
 
   return (
     <div style={{"display": "flex", "flexDirection": "row", "margin": "5%"}}>
       <div style={{"display": "flex", "flexDirection": "column", "width": '70%', "marginRight": "5%"}}>
-        <h4>{"⬅"} {months[calMonth]} {calYear} {"➡"}</h4>
+        <CalendarDisplay calMonth={calMonth} calYear={calYear} changeCalMonth={changeCalMonth} changeCalYear={changeCalYear} />
+        {/* <h4>{"⬅"} {months[calMonth]} {calYear} {"➡"}</h4> */}
         <BudgetProgress />
         {/* {if in pie chart mode, show the following two:} */}
         {pieView ? (
-          <PieChartContainer expenses={expenses} setCategoryFilter={setCategoryFilter} changeView={changeView} />
+          <PieChartContainer expenses={filteredExpenses} setCategoryFilter={setCategoryFilter} changeView={changeView} />
         ) :
           expenses.length ? (
-            <ExpensesList expenses={categoryFilter === "All" ? expenses : filteredExpenses}/>
+            <ExpensesList expenses={filteredExpenses}/>
           ) : (<p>Add an expense to get started</p>)
         }
       </div>
