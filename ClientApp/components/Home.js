@@ -95,7 +95,7 @@ const Home = () => {
 
   return (
     <div style={{"display": "flex", "flexDirection": "row", "margin": "5%"}}>
-      <div style={{"display": "flex", "flexDirection": "column", "width": '70%', "marginRight": "5%"}}>
+      <div style={{"display": "flex", "flexDirection": "column", "width": '700px', "marginRight": "5%", "flex": '0 0 auto'}}>
         <CalendarDisplay calMonth={calMonth} calYear={calYear} changeCalMonth={changeCalMonth} changeCalYear={changeCalYear} />
         {/* <h4>{"⬅"} {months[calMonth]} {calYear} {"➡"}</h4> */}
         <BudgetProgress />
@@ -108,7 +108,7 @@ const Home = () => {
           ) : (<p>Add an expense to get started</p>)
         }
       </div>
-      <div style={{"display": "flex", "flexDirection": "column", "width": '30%'}}>
+      <div style={{"display": "flex", "flexDirection": "column", "width": '350px', "flex": '0 0 auto'}}>
         <Button onClick={handleChangeView} style={{marginBottom: "15px"}}>{pieView ? "View Expenses" : "Home"}</Button>
         <NewExpense />
         {!pieView && (
