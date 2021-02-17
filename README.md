@@ -14,9 +14,9 @@ Expense tracker built for an offline desktop user. In the first four-day sprint 
 
 I used all of these technologies or methods for the first time in this project, and was able to successfully implement them in the first four day sprint. For those curious about building a similar project, I created this [video tutorial](https://www.youtube.com/watch?v=b4Hgu1_0bOk&t=258s) and this [boilerplate repo](https://github.com/KungoJung/Boilerplate-Electron-React-JSONStorage) for a React Electron project with a basic, local JSON database. 
 
-<img src="public/Expenses_SS2.png" width=600>
+<img src="public/Expenses_SS2.png" width=800>
 
-<img src="public/Expenses_SS1.png" width=600>
+<img src="public/Expenses_SS1.png" width=800>
 
 ### To get started:
 * Run `npm install`
