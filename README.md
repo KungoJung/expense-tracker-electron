@@ -1,6 +1,6 @@
 # These Expenses
 
-### Electron Expense Tracker for Fullstack Academy Hackathon Project
+### Electron Expense Tracker
 
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
