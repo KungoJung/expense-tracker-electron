@@ -4,7 +4,13 @@ import accounting from "accounting";
 
 const PieChartContainer = ({ expenses, setCategoryFilter, changeView, budget, setBudget, monthlyTotal }) => {
   const [categoryTotals, setCategoryTotals] = useState({});
+  const [editBudgetMode, toggleEditBudgetMode] = useState(false);
+  const [budgetInput, changeBudgetInput] = useState(budget)
 
+  const handleBudgetInput = e => {
+    console.log("input:", e.target.value)
+    changeBudgetInput(e.target.value)
+  }
 
   useEffect(() => {
     const totals = calculateTotals(expenses);
@@ -17,9 +23,21 @@ const PieChartContainer = ({ expenses, setCategoryFilter, changeView, budget, se
 
   return (
     <div>
-      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: "-20px"}}>
-        <h4 style={{}}>Total: {accounting.formatMoney(monthlyTotal)}</h4>
-        <h4>Monthly Budget: {accounting.formatMoney(budget)}</h4>
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: "-20px", fontSize: '1.5rem'}}>
+        Total: {accounting.formatMoney(monthlyTotal)}
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
+          Monthly Budget: {editBudgetMode
+            ? <input name="budget-input" style={{marginLeft: '10px', width: '100px', fontSize: '1.2rem'}} type='number' value={budgetInput} onChange={handleBudgetInput}/>
+            : `${accounting.formatMoney(budget)}`
+          }
+          {editBudgetMode && <button type="button" style={{marginLeft: '10px', fontSize: '1.2rem'}}
+          onClick={() => {
+            setBudget(budgetInput)
+            toggleEditBudgetMode(!editBudgetMode)
+          }
+          }>Save</button>}
+          <button type="button" style={{marginLeft: '10px', fontSize: '1.2rem'}} onClick={() => toggleEditBudgetMode(!editBudgetMode)}>{editBudgetMode ? 'X' : 'Edit'}</button>
+        </div>
       </div>
       <div style={{display: 'flex', justifyContent: 'center', width: '85%', margin: '0 auto'}}>
         <VictoryPie

@@ -7,9 +7,8 @@ const BudgetProgress = ({budget, monthlyTotal}) => {
 
   useEffect(() => {
     if (progress >= 100) setVariant('danger');
-    else if (progress >= 70) setVariant('warning')
-    else setVariant ('')
-    console.log(variant)
+    else if (progress >= 70) setVariant('warning');
+    else setVariant ('');
   }, [progress]);
 
   return (
