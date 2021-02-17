@@ -8,7 +8,7 @@ Expense tracker built for an offline desktop user. In the first four-day sprint 
 
 * Desktop App powered by Electron JS - interprocess communication between main program and renderer (window)
 * All functional components and managed state using React Hooks
-* Views: itemized list (React-Bootstrap) or pie chart (Victory JS)
+* Views: itemized table (React-Bootstrap) or pie chart (Victory JS)
 * Date Selection (Material-UI Calendar Component)
 * Local Database provided by Electron-JSON-Storage library
 
