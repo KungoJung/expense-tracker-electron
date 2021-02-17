@@ -23,8 +23,9 @@ const Home = () => {
   // Keep track of filters / single category here -- it will be used by both ExpensesList and BudgetProgress comps
   const [categoryFilter, setCategoryFilter] = useState('All')
 
-  // Incorporate budget later:
-  const [budget, setBudget] = useState(0)
+  // Budget and total spent:
+  const [budget, setBudget] = useState(1000)
+  const [monthlyTotal, setMonthlyTotal] = useState(0)
 
   // Incorporate this later for filtering for each month -- months are index 0:
   const [calMonth, changeCalMonth] = useState(getMonth(new Date()));
@@ -35,6 +36,7 @@ const Home = () => {
     loadSavedData();
   }, []);
 
+  // Update expenses
   useEffect(() => {
     const filtered = expenses.filter(exp => {
       const expDate = new Date(exp.date)
@@ -44,10 +46,18 @@ const Home = () => {
         && getYear(expDate) === calYear
         && getMonth(expDate) === calMonth
     })
-    console.log("NEW FILTERED EXPENSES:", filtered)
+    // console.log("NEW FILTERED EXPENSES:", filtered)
     setFilteredExpenses(filtered)
     // Listen for new Expenses, change in month or filter
   }, [categoryFilter, calMonth, expenses]);
+
+  // If filtered expenses change, recalculate monthly total
+  useEffect(() => {
+    const expensesTotal = filteredExpenses.reduce((total, expense) => {
+      return total + Number(expense.amount)
+    }, 0)
+    setMonthlyTotal(expensesTotal)
+  }, [filteredExpenses])
 
   // Listener functions that receive messages from main
   useEffect(() => {
@@ -97,11 +107,10 @@ const Home = () => {
     <div style={{"display": "flex", "flexDirection": "row", "margin": "5%"}}>
       <div style={{"display": "flex", "flexDirection": "column", "width": '700px', "marginRight": "5%", "flex": '0 0 auto'}}>
         <CalendarDisplay calMonth={calMonth} calYear={calYear} changeCalMonth={changeCalMonth} changeCalYear={changeCalYear} />
-        {/* <h4>{"⬅"} {months[calMonth]} {calYear} {"➡"}</h4> */}
-        <BudgetProgress />
+        <BudgetProgress budget={budget} monthlyTotal={monthlyTotal} />
         {/* {if in pie chart mode, show the following two:} */}
         {pieView ? (
-          <PieChartContainer expenses={filteredExpenses} setCategoryFilter={setCategoryFilter} changeView={changeView} />
+          <PieChartContainer expenses={filteredExpenses} setCategoryFilter={setCategoryFilter} changeView={changeView} budget={budget} setBudget={setBudget} monthlyTotal={monthlyTotal} />
         ) :
           expenses.length ? (
             <ExpensesList expenses={filteredExpenses}/>

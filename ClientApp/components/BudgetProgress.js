@@ -1,12 +1,24 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 
-const BudgetProgress = () => {
+const BudgetProgress = ({budget, monthlyTotal}) => {
+  const [variant, setVariant] = useState('')
+  const progress = Math.round((monthlyTotal / budget) * 100);
+
+  useEffect(() => {
+    if (progress >= 100) setVariant('danger');
+    else if (progress >= 70) setVariant('warning')
+    else setVariant ('')
+    console.log(variant)
+  }, [progress]);
+
   return (
-    <div>
-      <p>Placeholder for budget tracker. Sample:</p>
-      <ProgressBar now={60} style={{marginBottom: "30px"}}/>
-    </div>
+    <ProgressBar
+      now={progress}
+      animated
+      variant={variant}
+      style={{margin: "20px 0 10px 0"}}
+    />
   )
 }
 

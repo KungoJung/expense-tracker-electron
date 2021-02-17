@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { VictoryPie, VictoryTooltip } from "victory";
 import accounting from "accounting";
 
-const PieChartContainer = ({ expenses, setCategoryFilter, changeView }) => {
+const PieChartContainer = ({ expenses, setCategoryFilter, changeView, budget, setBudget, monthlyTotal }) => {
   const [categoryTotals, setCategoryTotals] = useState({});
 
 
@@ -15,13 +15,12 @@ const PieChartContainer = ({ expenses, setCategoryFilter, changeView }) => {
     return {y: categoryTotals[cat], label: `${cat}: ${accounting.formatMoney(categoryTotals[cat])}`, specialIdx: i, type: cat}
   })
 
-  const totalSpent = Object.values(categoryTotals).reduce((acc, amt) => {
-    return acc + amt
-  }, 0)
-
   return (
     <div>
-      <h4 style={{marginBottom: "-20px"}}>Total: {accounting.formatMoney(totalSpent)}</h4>
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: "-20px"}}>
+        <h4 style={{}}>Total: {accounting.formatMoney(monthlyTotal)}</h4>
+        <h4>Monthly Budget: {accounting.formatMoney(budget)}</h4>
+      </div>
       <div style={{display: 'flex', justifyContent: 'center', width: '85%', margin: '0 auto'}}>
         <VictoryPie
           style={{"width": "650px"}}

@@ -29,7 +29,7 @@ const defaultDataPath = storage.getDefaultDataPath();
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1200, height: 800, show: false, icon: __dirname + "/public/Lobster.icns"
+    width: 1200, height: 800, show: false,
   });
 
   // and load the index.html of the app.
